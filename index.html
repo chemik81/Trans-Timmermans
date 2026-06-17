@@ -1310,13 +1310,13 @@
 
   .sc-autoplay-iframe {
     flex: 1;
-    height: 80px;
+    height: 120px;
     border: none;
   }
 
   .sc-autoplay-close {
     width: 48px;
-    height: 80px;
+    height: 120px;
     background: none;
     border: none;
     border-left: 1px solid #1a1010;
@@ -1330,7 +1330,7 @@
   .sc-autoplay-close:hover { color: var(--red); background: #160A0A; }
 
   /* push footer above bar when bar is visible */
-  body.bar-open footer { padding-bottom: 96px; }
+  body.bar-open footer { padding-bottom: 136px; }
 
 </style>
 </head>
@@ -1956,6 +1956,7 @@ function toggleMix(card, tlId) {
 function skipIntro() {
   const intro = document.getElementById('intro');
   if (intro) intro.classList.add('hidden');
+  triggerScBar();
 }
 
 /* ── PARALLAX ── */
@@ -2075,40 +2076,32 @@ function updateMobileLang() {
 /* ── AUTOPLAY SC BAR ── */
 // Multiple sets — picks random one each visit, plays when user scrolls to #music
 const scTracks = [
-  // Strikt Podcast #16 — Trans Timmermans
-  'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/transtimmermans&auto_play=true&buying=false&liking=false&download=false&sharing=false&show_artwork=true&show_comments=false&show_playcount=false&show_user=true&hide_related=true&visual=false&start_track=0&color=%23FF2020',
-  // Fallback tracks — random sets from profile
-  'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/transtimmermans&auto_play=true&buying=false&liking=false&download=false&sharing=false&show_artwork=true&show_comments=false&show_playcount=false&show_user=true&hide_related=true&visual=false&start_track=1&color=%23FF2020',
-  'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/transtimmermans&auto_play=true&buying=false&liking=false&download=false&sharing=false&show_artwork=true&show_comments=false&show_playcount=false&show_user=true&hide_related=true&visual=false&start_track=2&color=%23FF2020',
+  // TT's warmup @ Zajezdnia: Zajedź Ciało 2019
+  'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/transtimmermans/trans-timmermans-techwix-2019-zajezdnia-zajedz-cialo-25102019&auto_play=true&buying=false&liking=false&download=false&sharing=false&show_artwork=true&show_comments=false&show_user=true&hide_related=true&visual=true&color=%23FF2020',
+  // Electrans Breakbeatmans @ TFR 2019
+  'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/transtimmermans/partimmer69&auto_play=true&buying=false&liking=false&download=false&sharing=false&show_artwork=true&show_comments=false&show_user=true&hide_related=true&visual=true&color=%23FF2020',
+  // Strikt Podcast #16
+  'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/striktlabel/strikt-podcast-16-trans-timmermans&auto_play=true&buying=false&liking=false&download=false&sharing=false&show_artwork=true&show_comments=false&show_user=true&hide_related=true&visual=true&color=%23FF2020',
+  // Filip Kutz & Trans Timmermans — Amenhoteps @ Schron 2018
+  'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/transtimmermans/amenhotepsatschron&auto_play=true&buying=false&liking=false&download=false&sharing=false&show_artwork=true&show_comments=false&show_user=true&hide_related=true&visual=true&color=%23FF2020',
+  // TRANS GABBERMANS — Zajezdnia #7
+  'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/transtimmermans/trans-gabbermans-zajezdnia-7-martwy-ciag-23062018&auto_play=true&buying=false&liking=false&download=false&sharing=false&show_artwork=true&show_comments=false&show_user=true&hide_related=true&visual=true&color=%23FF2020',
 ];
 
 let scBarTriggered = false;
+const chosenTrack = scTracks[Math.floor(Math.random() * scTracks.length)];
 
-(function() {
-  const musicSection = document.getElementById('music');
-  if (!musicSection) return;
-
-  const chosenTrack = scTracks[Math.floor(Math.random() * scTracks.length)];
-
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !scBarTriggered) {
-        scBarTriggered = true;
-        // slight delay so user is actually reading, not just passing through
-        setTimeout(() => {
-          const bar = document.getElementById('sc-bar');
-          const iframe = document.getElementById('sc-bar-iframe');
-          iframe.src = chosenTrack;
-          bar.classList.add('visible');
-          document.body.classList.add('bar-open');
-        }, 1200);
-        obs.disconnect();
-      }
-    });
-  }, { threshold: 0.5 });
-
-  obs.observe(musicSection);
-})();
+function triggerScBar() {
+  if (scBarTriggered) return;
+  scBarTriggered = true;
+  setTimeout(() => {
+    const bar = document.getElementById('sc-bar');
+    const iframe = document.getElementById('sc-bar-iframe');
+    iframe.src = chosenTrack;
+    bar.classList.add('visible');
+    document.body.classList.add('bar-open');
+  }, 600);
+}
 
 function closeScBar() {
   const bar = document.getElementById('sc-bar');
