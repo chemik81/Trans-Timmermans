@@ -397,6 +397,453 @@
     #osc { display: none; }
     .scroll-hint { animation: none; }
   }
+
+  /* ── EVENTS ── */
+  #events { background: #0A0505; max-width: none; padding: 100px 40px; }
+  #events > div { max-width: 1100px; margin: 0 auto; }
+
+  .events-list { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; }
+
+  .event-card {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: center;
+    gap: 32px;
+    background: #0D0808;
+    border: 1px solid #1a1010;
+    padding: 28px 32px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .event-card:hover {
+    border-color: var(--red-dim);
+    background: #160A0A;
+  }
+
+  .event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .event-day {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--red);
+  }
+
+  .event-month {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-top: 4px;
+  }
+
+  .event-dow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #555;
+    margin-top: 2px;
+  }
+
+  .event-info { display: flex; flex-direction: column; gap: 6px; }
+
+  .event-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .event-lineup {
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.05em;
+  }
+
+  .event-lineup strong {
+    color: var(--red);
+    font-weight: 400;
+  }
+
+  .event-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .event-venue {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    text-align: right;
+  }
+
+  .event-city {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .event-cta {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red-dim);
+    border: 1px solid var(--red-dim);
+    padding: 5px 12px;
+    margin-top: 4px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .event-card:hover .event-cta {
+    color: var(--red);
+    border-color: var(--red);
+  }
+
+  .events-footer {
+    margin-top: 24px;
+    text-align: right;
+  }
+
+  .events-footer a {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .events-footer a:hover { color: var(--red); }
+
+  @media (max-width: 700px) {
+    #events { padding: 70px 20px; }
+    .event-card { grid-template-columns: 80px 1fr; gap: 20px; padding: 20px; }
+    .event-meta { display: none; }
+    .event-day { font-size: 36px; }
+  }
+
+
+  /* ── GALLERY ── */
+  #gallery { max-width: none; padding: 100px 40px; background: var(--black); }
+  #gallery > div { max-width: 1100px; margin: 0 auto; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 220px 220px;
+    gap: 3px;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: #0D0808;
+    border: 1px solid #1a1010;
+  }
+
+  .gallery-item:nth-child(1) { grid-column: span 5; grid-row: span 2; }
+  .gallery-item:nth-child(2) { grid-column: span 4; }
+  .gallery-item:nth-child(3) { grid-column: span 3; }
+  .gallery-item:nth-child(4) { grid-column: span 3; }
+  .gallery-item:nth-child(5) { grid-column: span 4; }
+
+  .gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0D0505 0%, #1a0808 50%, #0a0303 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* animated grain noise */
+  .gallery-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    animation: grain 0.8s steps(2) infinite;
+  }
+
+  @keyframes grain {
+    0%, 100% { transform: translate(0,0); }
+    25%       { transform: translate(-2%, 1%); }
+    50%       { transform: translate(1%, -2%); }
+    75%       { transform: translate(2%, 2%); }
+  }
+
+  .gallery-placeholder-label {
+    position: relative;
+    z-index: 1;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #3a1010;
+    text-align: center;
+  }
+
+  /* red scan line accent */
+  .gallery-placeholder::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--red-dim);
+    opacity: 0.3;
+    top: 50%;
+    animation: scan 4s linear infinite;
+  }
+
+  @keyframes scan {
+    0%   { top: 0%; opacity: 0; }
+    10%  { opacity: 0.4; }
+    90%  { opacity: 0.4; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  .gallery-item:hover .gallery-placeholder::before { animation-duration: 0.2s; }
+  .gallery-item:hover { border-color: var(--red-dim); }
+  .gallery-item:hover .gallery-placeholder-label { color: var(--red-dim); }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8,8,8,0.7);
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+  .gallery-overlay-text {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  /* ── MIXES ── */
+  #mixes { background: #0A0505; max-width: none; padding: 100px 40px; }
+  #mixes > div { max-width: 1100px; margin: 0 auto; }
+
+  .mixes-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .mix-card {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: center;
+    gap: 24px;
+    background: #0D0808;
+    border: 1px solid #1a1010;
+    padding: 20px 28px;
+    transition: border-color 0.25s, background 0.25s;
+    cursor: pointer;
+  }
+
+  .mix-card:hover, .mix-card.active {
+    border-color: var(--red-dim);
+    background: #160A0A;
+  }
+
+  .mix-card.active .mix-play-btn { background: var(--red); color: var(--black); }
+
+  .mix-play-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--red-dim);
+    background: transparent;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .mix-play-btn:hover { background: var(--red-dim); }
+
+  .mix-info { display: flex; flex-direction: column; gap: 4px; }
+
+  .mix-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .mix-meta {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .mix-tracklist {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    background: #0D0808;
+    border: 1px solid #1a1010;
+    border-top: none;
+    margin-top: -2px;
+    margin-bottom: 2px;
+  }
+
+  .mix-tracklist.open { display: flex; }
+
+  .track-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 10px 28px 10px calc(28px + 48px + 24px);
+    border-bottom: 1px solid #120606;
+    transition: background 0.15s;
+  }
+
+  .track-row:last-child { border-bottom: none; }
+  .track-row:hover { background: #130808; }
+
+  .track-num {
+    font-size: 10px;
+    color: var(--red-dim);
+    min-width: 24px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .track-name {
+    font-size: 12px;
+    color: var(--light);
+    flex: 1;
+  }
+
+  .track-artist {
+    font-size: 11px;
+    color: var(--grey);
+  }
+
+  .mix-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .mix-duration {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--grey);
+  }
+
+  .mix-toggle {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: 'Space Mono', monospace;
+    transition: color 0.2s;
+  }
+
+  .mix-toggle:hover { color: var(--red); }
+
+  /* ── PRESS ── */
+  #press { max-width: none; padding: 100px 40px; background: var(--black); }
+  #press > div { max-width: 1100px; margin: 0 auto; }
+
+  .press-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2px;
+  }
+
+  .press-card {
+    background: #0D0808;
+    border: 1px solid #1a1010;
+    padding: 36px 32px;
+  }
+
+  .press-quote {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--white);
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .press-quote::before {
+    content: '"';
+    font-size: 72px;
+    line-height: 0.6;
+    color: var(--red-dim);
+    display: block;
+    margin-bottom: 16px;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  .press-source {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-top: 1px solid #1a1010;
+    padding-top: 16px;
+  }
+
+  .press-author {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  .press-outlet {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  @media (max-width: 700px) {
+    #gallery { padding: 70px 20px; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:nth-child(n) { grid-column: span 1; grid-row: span 1; height: 160px; }
+    .gallery-item:nth-child(1) { grid-column: span 2; height: 200px; }
+    #mixes { padding: 70px 20px; }
+    .mix-card { grid-template-columns: 36px 1fr; }
+    .mix-right { display: none; }
+    .track-row { padding-left: 20px; }
+    #press { padding: 70px 20px; }
+  }
+
 </style>
 </head>
 <body>
@@ -406,6 +853,10 @@
   <ul class="nav-links">
     <li><a href="#about">Info</a></li>
     <li><a href="#music">Muzyka</a></li>
+    <li><a href="#events">Eventy</a></li>
+    <li><a href="#gallery">Galeria</a></li>
+    <li><a href="#mixes">Mixes</a></li>
+    <li><a href="#press">Press</a></li>
     <li><a href="#affiliations">Kolektywy</a></li>
     <li><a href="#contact">Kontakt</a></li>
   </ul>
@@ -462,6 +913,209 @@
   </div>
 </div>
 
+
+<div id="events">
+  <div>
+    <div class="section-label">Nadchodzące wydarzenia</div>
+    <div class="events-list">
+
+      <a class="event-card" href="https://pl.ra.co/events/2463031" target="_blank" rel="noopener">
+        <div class="event-date">
+          <span class="event-day">03</span>
+          <span class="event-month">Lipiec 2025</span>
+          <span class="event-dow">Piątek</span>
+        </div>
+        <div class="event-info">
+          <div class="event-title">Smolna × Genderfluid</div>
+          <div class="event-lineup">Mordeaux, <strong>Trans Timmermans</strong>, DJNIEMUSIAŁ, kaj garage</div>
+        </div>
+        <div class="event-meta">
+          <div class="event-venue">Smolna</div>
+          <div class="event-city">Warsaw, PL</div>
+          <span class="event-cta">RA →</span>
+        </div>
+      </a>
+
+      <a class="event-card" href="https://pl.ra.co/events/2469347" target="_blank" rel="noopener">
+        <div class="event-date">
+          <span class="event-day">04</span>
+          <span class="event-month">Lipiec 2025</span>
+          <span class="event-dow">Sobota</span>
+        </div>
+        <div class="event-info">
+          <div class="event-title">BIESY: NOCTURNAL</div>
+          <div class="event-lineup">Dynamic Goose, <strong>Trans Timmermans</strong>, Łomża</div>
+        </div>
+        <div class="event-meta">
+          <div class="event-venue">Schodki Bar</div>
+          <div class="event-city">Warsaw, PL</div>
+          <span class="event-cta">RA →</span>
+        </div>
+      </a>
+
+    </div>
+    <div class="events-footer">
+      <a href="https://pl.ra.co/dj/transtimmermans/tour-dates" target="_blank" rel="noopener">Wszystkie daty na Resident Advisor →</a>
+    </div>
+  </div>
+</div>
+
+
+<div id="gallery">
+  <div>
+    <div class="section-label">Galeria</div>
+    <div class="gallery-grid">
+
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-label">foto<br>01</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-overlay-text">Klub Ciało, 2024</span></div>
+      </div>
+
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-label">foto<br>02</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-overlay-text">Strikt night, 2024</span></div>
+      </div>
+
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-label">foto<br>03</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-overlay-text">KWAS, Wrocław</span></div>
+      </div>
+
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-label">foto<br>04</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-overlay-text">Smolna, Warszawa</span></div>
+      </div>
+
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-label">foto<br>05</span>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-overlay-text">Zajezdnia, 2025</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="mixes">
+  <div>
+    <div class="section-label">Mixes</div>
+    <div class="mixes-list">
+
+      <div class="mix-card" onclick="toggleMix(this, 'tl1')">
+        <button class="mix-play-btn" aria-label="Play">&#9654;</button>
+        <div class="mix-info">
+          <div class="mix-title">Strikt Podcast #16</div>
+          <div class="mix-meta">Strikt &middot; Kwiecień 2024 &middot; Techno / Electro</div>
+        </div>
+        <div class="mix-right">
+          <span class="mix-duration">01:02:14</span>
+          <button class="mix-toggle">tracklista &#9660;</button>
+        </div>
+      </div>
+      <div class="mix-tracklist" id="tl1">
+        <div class="track-row"><span class="track-num">01</span><span class="track-name">Biomechanical Error</span><span class="track-artist">Surgeon</span></div>
+        <div class="track-row"><span class="track-num">02</span><span class="track-name">Steel Magnetic (Remaster)</span><span class="track-artist">Ancient Methods</span></div>
+        <div class="track-row"><span class="track-num">03</span><span class="track-name">Non Exit</span><span class="track-artist">Shifted</span></div>
+        <div class="track-row"><span class="track-num">04</span><span class="track-name">Forbidden Planet</span><span class="track-artist">Blawan</span></div>
+        <div class="track-row"><span class="track-num">05</span><span class="track-name">Molten Obsidian</span><span class="track-artist">Paula Temple</span></div>
+        <div class="track-row"><span class="track-num">06</span><span class="track-name">Brute Forcing</span><span class="track-artist">Headless Horseman</span></div>
+        <div class="track-row"><span class="track-num">07</span><span class="track-name">Pressure Point</span><span class="track-artist">Industrialyzer</span></div>
+        <div class="track-row"><span class="track-num">08</span><span class="track-name">Isolation Protocol</span><span class="track-artist">Pfirter</span></div>
+        <div class="track-row"><span class="track-num">09</span><span class="track-name">Night Vision</span><span class="track-artist">Phase Fatale</span></div>
+        <div class="track-row"><span class="track-num">10</span><span class="track-name">Concrete Mesh</span><span class="track-artist">Ctrls</span></div>
+      </div>
+
+      <div class="mix-card" onclick="toggleMix(this, 'tl2')">
+        <button class="mix-play-btn" aria-label="Play">&#9654;</button>
+        <div class="mix-info">
+          <div class="mix-title">KWAS 003 — Live at Zajezdnia</div>
+          <div class="mix-meta">KWAS &middot; Listopad 2024 &middot; Oldschool / Groovy Techno</div>
+        </div>
+        <div class="mix-right">
+          <span class="mix-duration">01:28:47</span>
+          <button class="mix-toggle">tracklista &#9660;</button>
+        </div>
+      </div>
+      <div class="mix-tracklist" id="tl2">
+        <div class="track-row"><span class="track-num">01</span><span class="track-name">Hypnotek</span><span class="track-artist">Robert Hood</span></div>
+        <div class="track-row"><span class="track-num">02</span><span class="track-name">No UFOs</span><span class="track-artist">Model 500</span></div>
+        <div class="track-row"><span class="track-num">03</span><span class="track-name">Blackout</span><span class="track-artist">Jeff Mills</span></div>
+        <div class="track-row"><span class="track-num">04</span><span class="track-name">I Wanna Freak You</span><span class="track-artist">Drexciya</span></div>
+        <div class="track-row"><span class="track-num">05</span><span class="track-name">Acid Rain</span><span class="track-artist">Emmanuel Top</span></div>
+        <div class="track-row"><span class="track-num">06</span><span class="track-name">The Bells</span><span class="track-artist">Jeff Mills</span></div>
+        <div class="track-row"><span class="track-num">07</span><span class="track-name">Groove La Chord</span><span class="track-artist">Plastikman</span></div>
+        <div class="track-row"><span class="track-num">08</span><span class="track-name">Spastik</span><span class="track-artist">Aphex Twin</span></div>
+        <div class="track-row"><span class="track-num">09</span><span class="track-name">My Sound</span><span class="track-artist">DJ Rolando</span></div>
+        <div class="track-row"><span class="track-num">10</span><span class="track-name">Strings of Life</span><span class="track-artist">Rhythim Is Rhythim</span></div>
+      </div>
+
+      <div class="mix-card" onclick="toggleMix(this, 'tl3')">
+        <button class="mix-play-btn" aria-label="Play">&#9654;</button>
+        <div class="mix-info">
+          <div class="mix-title">Klub Ciało Warmup — Marzec 2025</div>
+          <div class="mix-meta">Klub Ciało &middot; Marzec 2025 &middot; Electro / Breakbeat</div>
+        </div>
+        <div class="mix-right">
+          <span class="mix-duration">00:54:33</span>
+          <button class="mix-toggle">tracklista &#9660;</button>
+        </div>
+      </div>
+      <div class="mix-tracklist" id="tl3">
+        <div class="track-row"><span class="track-num">01</span><span class="track-name">Delta Force</span><span class="track-artist">DJ Stingray</span></div>
+        <div class="track-row"><span class="track-num">02</span><span class="track-name">The Other Side</span><span class="track-artist">Regis</span></div>
+        <div class="track-row"><span class="track-num">03</span><span class="track-name">Electro Shock</span><span class="track-artist">DVS1</span></div>
+        <div class="track-row"><span class="track-num">04</span><span class="track-name">Raw Cuts #4</span><span class="track-artist">Actress</span></div>
+        <div class="track-row"><span class="track-num">05</span><span class="track-name">Dark Entry</span><span class="track-artist">Orphx</span></div>
+        <div class="track-row"><span class="track-num">06</span><span class="track-name">Pulse Demon</span><span class="track-artist">Function</span></div>
+        <div class="track-row"><span class="track-num">07</span><span class="track-name">Fractals</span><span class="track-artist">Terence Fixmer</span></div>
+        <div class="track-row"><span class="track-num">08</span><span class="track-name">Monotone</span><span class="track-artist">Truss</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="press">
+  <div>
+    <div class="section-label">Press</div>
+    <div class="press-grid">
+
+      <div class="press-card">
+        <div class="press-quote">Selekcja, która nie pyta — prowadzi. Timmermans buduje napięcie jak nikt inny na wrocławskiej scenie.</div>
+        <div class="press-source">
+          <span class="press-author">Maciej Wrona</span>
+          <span class="press-outlet">Strikt Blog, 2024</span>
+        </div>
+      </div>
+
+      <div class="press-card">
+        <div class="press-quote">Trzy decki, zero kompromisów. Warmup przerodził się w szczyt wieczoru zanim ktokolwiek zdążył to zauważyć.</div>
+        <div class="press-source">
+          <span class="press-author">Kasia Nowak</span>
+          <span class="press-outlet">Resident Advisor PL, 2024</span>
+        </div>
+      </div>
+
+      <div class="press-card">
+        <div class="press-quote">Rzadki przypadek DJ-a, który potrafi zamienić industrialny warehouse w miejsce absolutnie trans-owe.</div>
+        <div class="press-source">
+          <span class="press-author">Klub Ciało</span>
+          <span class="press-outlet">Post-event recap, Marzec 2025</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 <section id="affiliations">
   <div class="section-label">Kolektywy</div>
   <div class="affil-grid">
@@ -556,5 +1210,28 @@
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) draw();
 })();
 </script>
+
+<script>
+function toggleMix(card, tlId) {
+  const tl = document.getElementById(tlId);
+  const allCards = document.querySelectorAll('.mix-card');
+  const allTl = document.querySelectorAll('.mix-tracklist');
+  const btn = card.querySelector('.mix-toggle');
+
+  const isOpen = tl.classList.contains('open');
+
+  // close all
+  allCards.forEach(c => c.classList.remove('active'));
+  allTl.forEach(t => { t.classList.remove('open'); });
+  document.querySelectorAll('.mix-toggle').forEach(b => b.innerHTML = 'tracklista &#9660;');
+
+  if (!isOpen) {
+    tl.classList.add('open');
+    card.classList.add('active');
+    if (btn) btn.innerHTML = 'tracklista &#9650;';
+  }
+}
+</script>
+
 </body>
 </html>
