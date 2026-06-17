@@ -844,22 +844,402 @@
     #press { padding: 70px 20px; }
   }
 
+
+  /* ── CUSTOM CURSOR ── */
+  *, *::before, *::after { cursor: none !important; }
+
+  .cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid var(--red);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.2s, height 0.2s, border-color 0.2s;
+  }
+
+  .cursor-dot {
+    width: 4px; height: 4px;
+    background: var(--red);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    top: 0; left: 0;
+    position: absolute;
+  }
+
+  .cursor.hover .cursor-ring {
+    width: 48px; height: 48px;
+    border-color: var(--white);
+  }
+
+  /* crosshair lines */
+  .cursor-ring::before, .cursor-ring::after {
+    content: '';
+    position: absolute;
+    background: var(--red);
+    opacity: 0.5;
+  }
+  .cursor-ring::before { width: 1px; height: 10px; left: 50%; top: -14px; transform: translateX(-50%); }
+  .cursor-ring::after  { width: 10px; height: 1px; top: 50%; left: -14px; transform: translateY(-50%); }
+
+  @media (hover: none) { .cursor { display: none; } *, *::before, *::after { cursor: auto !important; } }
+
+  /* ── INTRO ── */
+  #intro {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+
+  #intro.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  #intro canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    opacity: 0.4;
+  }
+
+  .intro-text {
+    position: relative;
+    z-index: 2;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(40px, 8vw, 100px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    text-align: center;
+    line-height: 0.9;
+  }
+
+  .intro-text span { color: var(--red); display: block; }
+
+  .intro-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.06s ease, transform 0.06s ease;
+  }
+
+  .intro-char.show { opacity: 1; transform: translateY(0); }
+
+  .intro-bar {
+    position: relative;
+    z-index: 2;
+    width: 200px;
+    height: 1px;
+    background: #1a1010;
+    overflow: hidden;
+  }
+
+  .intro-bar::after {
+    content: '';
+    position: absolute;
+    left: -100%; top: 0;
+    width: 100%; height: 100%;
+    background: var(--red);
+    animation: introLoad 2.2s ease forwards;
+  }
+
+  @keyframes introLoad {
+    0%   { left: -100%; }
+    100% { left: 0%; }
+  }
+
+  .intro-skip {
+    position: absolute;
+    bottom: 32px; right: 40px;
+    z-index: 2;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #333;
+    background: none;
+    border: none;
+    font-family: 'Space Mono', monospace;
+    transition: color 0.2s;
+  }
+  .intro-skip:hover { color: var(--red); }
+
+  /* ── PARALLAX HERO ── */
+  .hero-banner { will-change: transform; }
+
+  /* ── MANIFEST ── */
+  #manifest { max-width: none; padding: 120px 40px; background: #080305; }
+  #manifest > div { max-width: 900px; margin: 0 auto; text-align: center; }
+
+  .manifest-quote {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(26px, 4vw, 46px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 40px;
+  }
+
+  .manifest-quote em { color: var(--red); font-style: normal; }
+
+  .manifest-sig {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  /* ── TIMELINE ── */
+  #timeline { max-width: none; padding: 100px 40px; background: var(--black); }
+  #timeline > div { max-width: 800px; margin: 0 auto; }
+
+  .timeline-list {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline-list::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--red-dim) 10%, var(--red-dim) 90%, transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 48px 32px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -5px; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--black);
+    border: 1px solid var(--red-dim);
+  }
+
+  .timeline-item.highlight::before {
+    background: var(--red);
+    border-color: var(--red);
+    box-shadow: 0 0 12px rgba(255,32,32,0.5);
+  }
+
+  .timeline-year {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+
+  .timeline-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .timeline-desc {
+    font-size: 12px;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  /* ── BOOKING FORM ── */
+  #booking { max-width: none; padding: 100px 40px; background: #0A0505; }
+  #booking > div { max-width: 700px; margin: 0 auto; }
+
+  .booking-form { display: flex; flex-direction: column; gap: 2px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red);
+    padding: 14px 20px 0;
+    background: #0D0808;
+    border: 1px solid #1a1010;
+    border-bottom: none;
+  }
+
+  .form-input, .form-textarea, .form-select {
+    background: #0D0808;
+    border: 1px solid #1a1010;
+    border-top: none;
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 10px 20px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .form-select { background-image: none; }
+
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--red-dim);
+  }
+
+  .form-textarea { height: 120px; resize: none; }
+
+  .form-input::placeholder, .form-textarea::placeholder { color: #333; }
+
+  .form-submit {
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    cursor: none;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 2px;
+    align-self: flex-start;
+  }
+
+  .form-submit:hover { background: var(--red); color: var(--black); }
+  .form-submit.sent { background: var(--red-dim); border-color: var(--red-dim); color: #888; pointer-events: none; }
+
+  .form-note {
+    font-size: 10px;
+    color: #333;
+    letter-spacing: 0.1em;
+    margin-top: 16px;
+  }
+
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    margin-left: 24px;
+  }
+
+  .lang-btn {
+    background: none;
+    border: 1px solid #222;
+    color: var(--grey);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    padding: 4px 10px;
+    cursor: none;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+
+  .lang-btn.active { border-color: var(--red-dim); color: var(--red); background: #1a0808; }
+  .lang-btn:first-child { border-right: none; }
+
+  /* ── DARK/SEPIA TOGGLE ── */
+  .theme-btn {
+    background: none;
+    border: 1px solid #222;
+    color: var(--grey);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    padding: 4px 10px;
+    cursor: none;
+    transition: color 0.2s, border-color 0.2s;
+    margin-left: 8px;
+  }
+
+  .theme-btn:hover { color: var(--red); border-color: var(--red-dim); }
+
+  body.sepia {
+    --black:   #12100E;
+    --deep:    #1A1410;
+    --red:     #C8893A;
+    --red-dim: #6B4820;
+    --grey:    #7A6A58;
+    --light:   #C4B49A;
+    --white:   #E8DCC8;
+    background: var(--black);
+  }
+
+  @media (max-width: 700px) {
+    #manifest { padding: 70px 20px; }
+    #timeline { padding: 70px 20px; }
+    #booking { padding: 70px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .lang-toggle { display: none; }
+    .theme-btn { display: none; }
+  }
+
 </style>
 </head>
 <body>
 
+
+<div id="intro">
+  <canvas id="intro-osc"></canvas>
+  <div class="intro-text">
+    <div id="intro-line1"></div>
+    <span id="intro-line2"></span>
+  </div>
+  <div class="intro-bar"></div>
+  <button class="intro-skip" onclick="skipIntro()">pomiń esc</button>
+</div>
+
+<div class="cursor" id="cursor">
+  <div class="cursor-ring"></div>
+  <div class="cursor-dot"></div>
+</div>
+
 <nav>
   <a class="nav-logo" href="#">T.T.</a>
   <ul class="nav-links">
-    <li><a href="#about">Info</a></li>
+    <li><a href="#about" data-pl="Info" data-en="Info">Info</a></li>
     <li><a href="#music">Muzyka</a></li>
-    <li><a href="#events">Eventy</a></li>
-    <li><a href="#gallery">Galeria</a></li>
-    <li><a href="#mixes">Mixes</a></li>
+    <li><a href="#events" data-pl="Eventy" data-en="Events">Eventy</a></li>
+    <li><a href="#gallery" data-pl="Galeria" data-en="Gallery">Galeria</a></li>
+    <li><a href="#mixes" data-pl="Mixes" data-en="Mixes">Mixes</a></li>
     <li><a href="#press">Press</a></li>
-    <li><a href="#affiliations">Kolektywy</a></li>
+    <li><a href="#timeline" data-pl="Historia" data-en="History">Historia</a></li>
+    <li><a href="#booking" data-pl="Booking" data-en="Booking">Booking</a></li>
+    <li><a href="#affiliations" data-pl="Kolektywy" data-en="Collectives">Kolektywy</a></li>
     <li><a href="#contact">Kontakt</a></li>
   </ul>
+  <div style="display:flex;align-items:center;">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('pl')" id="btn-pl">PL</button>
+      <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" title="Zmień motyw">◑</button>
+  </div>
 </nav>
 
 <div class="hero">
@@ -1116,6 +1496,100 @@
     </div>
   </div>
 </div>
+
+<div id="manifest">
+  <div>
+    <p class="manifest-quote" data-pl="Techno to nie gatunek — to <em>stan skupienia</em>. Każdy set jest dokumentem chwili: miasta, parkietu, godziny. Gram bez sentymentu i bez mapy. Tylko sekwencja, napięcie i to co wydarza się <em>między</em> beatami." data-en="Techno is not a genre — it's a <em>state of matter</em>. Every set is a document of a moment: the city, the dancefloor, the hour. I play without sentiment and without a map. Only sequence, tension and what happens <em>between</em> the beats.">
+      Techno to nie gatunek — to <em>stan skupienia</em>. Każdy set jest dokumentem chwili: miasta, parkietu, godziny. Gram bez sentymentu i bez mapy. Tylko sekwencja, napięcie i to co wydarza się <em>między</em> beatami.
+    </p>
+    <p class="manifest-sig">— Trans Timmermans</p>
+  </div>
+</div>
+
+<div id="timeline">
+  <div>
+    <div class="section-label" data-pl="Historia" data-en="History">Historia</div>
+    <div class="timeline-list">
+
+      <div class="timeline-item">
+        <div class="timeline-year">2018</div>
+        <div class="timeline-title" data-pl="Pierwsze sety — Wrocław underground" data-en="First sets — Wrocław underground">Pierwsze sety — Wrocław underground</div>
+        <div class="timeline-desc" data-pl="Początek przygody z techniką i selekcją w podziemnych klubach Wrocławia. Pierwsze eksperymenty z trójdeckowym mixem." data-en="The beginning with technique and selection in Wrocław's underground clubs. First experiments with three-deck mixing.">Początek przygody z techniką i selekcją w podziemnych klubach Wrocławia. Pierwsze eksperymenty z trójdeckowym mixem.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2021</div>
+        <div class="timeline-title" data-pl="Dołączenie do kolektywu KWAS" data-en="Joining the KWAS collective">Dołączenie do kolektywu KWAS</div>
+        <div class="timeline-desc" data-pl="Regularny udział w eventach formacji RAVE IN IT. Budowanie tożsamości selekcyjnej i sieciowanie ze sceną." data-en="Regular participation in RAVE IN IT events. Building a selection identity and networking within the scene.">Regularny udział w eventach formacji RAVE IN IT. Budowanie tożsamości selekcyjnej i sieciowanie ze sceną.</div>
+      </div>
+
+      <div class="timeline-item highlight">
+        <div class="timeline-year">2022</div>
+        <div class="timeline-title" data-pl="Rezydencja — Klub Ciało" data-en="Residency — Klub Ciało">Rezydencja — Klub Ciało</div>
+        <div class="timeline-desc" data-pl="Oficjalna rezydencja w jednym z kluczowych klubów Wrocławia. Regularny warmup i sety główne w cyklu Zajezdnia." data-en="Official residency at one of Wrocław's key clubs. Regular warmup and main sets in the Zajezdnia series.">Oficjalna rezydencja w jednym z kluczowych klubów Wrocławia. Regularny warmup i sety główne w cyklu Zajezdnia.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2023</div>
+        <div class="timeline-title" data-pl="Wejście do Strikt" data-en="Joining Strikt">Wejście do Strikt</div>
+        <div class="timeline-desc" data-pl="Dołączenie do wrocławskiego labelu i kolektywu Strikt. Wspólne imprezy, first appearances obok artystów z zagranicy." data-en="Joining the Wrocław-based Strikt label and collective. Joint events, first appearances alongside international artists.">Dołączenie do wrocławskiego labelu i kolektywu Strikt. Wspólne imprezy, pierwsze sety obok artystów z zagranicy.</div>
+      </div>
+
+      <div class="timeline-item highlight">
+        <div class="timeline-year">2024</div>
+        <div class="timeline-title" data-pl="Strikt Podcast #16" data-en="Strikt Podcast #16">Strikt Podcast #16</div>
+        <div class="timeline-desc" data-pl="Nagranie autorskiego podcasta dla Strikt — ponad godzina surowego, wielowarstwowego techno. Setka odsłuchań w pierwszym tygodniu." data-en="Recording an original podcast for Strikt — over an hour of raw, layered techno. Hundreds of plays in the first week.">Nagranie autorskiego podcasta dla Strikt — ponad godzina surowego, wielowarstwowego techno.</div>
+      </div>
+
+      <div class="timeline-item highlight">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-title" data-pl="Debiut poza Wrocławiem — Warszawa" data-en="Debut outside Wrocław — Warsaw">Debiut poza Wrocławiem — Warszawa</div>
+        <div class="timeline-desc" data-pl="Pierwsze sety w Warszawie: Smolna × Genderfluid i BIESY: NOCTURNAL. Ekspansja poza macierzystą scenę." data-en="First sets in Warsaw: Smolna × Genderfluid and BIESY: NOCTURNAL. Expansion beyond the home scene.">Pierwsze sety w Warszawie: Smolna × Genderfluid i BIESY: NOCTURNAL. Ekspansja poza macierzystą scenę.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="booking">
+  <div>
+    <div class="section-label" data-pl="Booking" data-en="Booking">Booking</div>
+    <div class="booking-form">
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" data-pl="Imię / Nazwa" data-en="Name">Imię / Nazwa</label>
+          <input class="form-input" type="text" placeholder="Jan Kowalski" id="f-name">
+        </div>
+        <div class="form-field">
+          <label class="form-label" data-pl="E-mail" data-en="E-mail">E-mail</label>
+          <input class="form-input" type="email" placeholder="kontakt@klub.pl" id="f-email">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" data-pl="Data eventu" data-en="Event date">Data eventu</label>
+          <input class="form-input" type="date" id="f-date">
+        </div>
+        <div class="form-field">
+          <label class="form-label" data-pl="Rodzaj eventu" data-en="Event type">Rodzaj eventu</label>
+          <select class="form-select form-input" id="f-type">
+            <option value="" data-pl="Wybierz..." data-en="Select...">Wybierz...</option>
+            <option value="club" data-pl="Klub / rezydencja" data-en="Club / residency">Klub / rezydencja</option>
+            <option value="festival" data-pl="Festiwal" data-en="Festival">Festiwal</option>
+            <option value="private" data-pl="Impreza prywatna" data-en="Private event">Impreza prywatna</option>
+            <option value="other" data-pl="Inne" data-en="Other">Inne</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label" data-pl="Wiadomość" data-en="Message">Wiadomość</label>
+        <textarea class="form-textarea" placeholder="Venue, lineup, szczegóły..." id="f-msg"></textarea>
+      </div>
+      <button class="form-submit" onclick="submitForm()" id="f-submit" data-pl="Wyślij zapytanie →" data-en="Send inquiry →">Wyślij zapytanie →</button>
+      <p class="form-note" data-pl="Odpowiedź w ciągu 48h. Można też pisać bezpośrednio: trans.timmermans@gmail.com" data-en="Reply within 48h. You can also write directly: trans.timmermans@gmail.com">Odpowiedź w ciągu 48h. Można też pisać bezpośrednio: trans.timmermans@gmail.com</p>
+    </div>
+  </div>
+</div>
 <section id="affiliations">
   <div class="section-label">Kolektywy</div>
   <div class="affil-grid">
@@ -1230,6 +1704,186 @@ function toggleMix(card, tlId) {
     card.classList.add('active');
     if (btn) btn.innerHTML = 'tracklista &#9650;';
   }
+}
+</script>
+
+
+<script>
+/* ── CUSTOM CURSOR ── */
+(function() {
+  const cur = document.getElementById('cursor');
+  const ring = cur.querySelector('.cursor-ring');
+  let mx = 0, my = 0, cx = 0, cy = 0;
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  function animCursor() {
+    cx += (mx - cx) * 0.18;
+    cy += (my - cy) * 0.18;
+    cur.style.left = mx + 'px';
+    cur.style.top  = my + 'px';
+    ring.style.left = cx + 'px';
+    ring.style.top  = cy + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  document.querySelectorAll('a, button, .mix-card, .event-card, .affil-card, .gallery-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+  });
+})();
+
+/* ── INTRO ANIMATION ── */
+(function() {
+  const intro = document.getElementById('intro');
+  if (!intro) return;
+
+  // Intro oscilloscope
+  const c = intro.querySelector('canvas');
+  const ctx = c.getContext('2d');
+  let W, H, t = 0;
+  function resizeIntro() { W = c.width = c.offsetWidth; H = c.height = c.offsetHeight; }
+  window.addEventListener('resize', resizeIntro); resizeIntro();
+
+  function drawIntro() {
+    if (intro.classList.contains('hidden')) return;
+    ctx.clearRect(0,0,W,H);
+    t++;
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255,32,32,0.8)';
+    ctx.lineWidth = 1.5;
+    ctx.shadowBlur = 12; ctx.shadowColor = 'rgba(255,32,32,0.4)';
+    for (let x = 0; x <= W; x += 2) {
+      const y = H/2 + Math.sin(x*0.002 + t*0.012)*(H*0.3) + Math.sin(x*0.005 + t*0.02)*(H*0.08);
+      if (x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    requestAnimationFrame(drawIntro);
+  }
+  drawIntro();
+
+  // Type-in animation
+  const line1El = document.getElementById('intro-line1');
+  const line2El = document.getElementById('intro-line2');
+  const word1 = 'Trans';
+  const word2 = 'Timmermans';
+  let idx = 0;
+
+  function typeChar() {
+    if (idx < word1.length) {
+      const sp = document.createElement('span');
+      sp.className = 'intro-char';
+      sp.textContent = word1[idx];
+      line1El.appendChild(sp);
+      setTimeout(() => sp.classList.add('show'), 10);
+      idx++;
+      setTimeout(typeChar, 80);
+    } else if (idx < word1.length + word2.length) {
+      const i = idx - word1.length;
+      const sp = document.createElement('span');
+      sp.className = 'intro-char';
+      sp.textContent = word2[i];
+      line2El.appendChild(sp);
+      setTimeout(() => sp.classList.add('show'), 10);
+      idx++;
+      setTimeout(typeChar, 80);
+    }
+  }
+
+  setTimeout(typeChar, 400);
+
+  // Auto-dismiss after 2.8s
+  setTimeout(() => skipIntro(), 2800);
+
+  // ESC key
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') skipIntro(); });
+})();
+
+function skipIntro() {
+  const intro = document.getElementById('intro');
+  if (intro) intro.classList.add('hidden');
+}
+
+/* ── PARALLAX ── */
+(function() {
+  const banner = document.querySelector('.hero-banner');
+  if (!banner) return;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight) {
+      banner.style.transform = `translateY(${y * 0.35}px)`;
+    }
+  }, { passive: true });
+})();
+
+/* ── TIMELINE INTERSECTION ── */
+(function() {
+  const items = document.querySelectorAll('.timeline-item');
+  if (!items.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.2 });
+  items.forEach(i => obs.observe(i));
+})();
+
+/* ── LANG TOGGLE ── */
+let currentLang = 'pl';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-pl').classList.toggle('active', lang === 'pl');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+  document.querySelectorAll('[data-pl]').forEach(el => {
+    const txt = el.getAttribute('data-' + lang);
+    if (!txt) return;
+    // if contains HTML tags use innerHTML
+    if (txt.includes('<')) el.innerHTML = txt;
+    else el.textContent = txt;
+  });
+
+  // placeholder updates
+  const pmap = {
+    'pl': { 'f-name': 'Jan Kowalski', 'f-msg': 'Venue, lineup, szczegóły...' },
+    'en': { 'f-name': 'John Smith',   'f-msg': 'Venue, lineup, details...' }
+  };
+  Object.entries(pmap[lang]).forEach(([id, ph]) => {
+    const el = document.getElementById(id);
+    if (el) el.placeholder = ph;
+  });
+
+  // select options
+  document.querySelectorAll('select option[data-' + lang + ']').forEach(opt => {
+    opt.textContent = opt.getAttribute('data-' + lang);
+  });
+}
+
+/* ── THEME TOGGLE ── */
+function toggleTheme() {
+  document.body.classList.toggle('sepia');
+}
+
+/* ── BOOKING FORM ── */
+function submitForm() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const date  = document.getElementById('f-date').value;
+  const type  = document.getElementById('f-type').value;
+  const msg   = document.getElementById('f-msg').value.trim();
+
+  if (!name || !email) {
+    alert(currentLang === 'pl' ? 'Podaj imię i e-mail.' : 'Please enter name and email.');
+    return;
+  }
+
+  const subject = encodeURIComponent('Booking: ' + (date || '?') + ' – ' + (type || 'event'));
+  const body    = encodeURIComponent('Imię: ' + name + '\nE-mail: ' + email + '\nData: ' + date + '\nRodzaj: ' + type + '\n\n' + msg);
+  window.location.href = 'mailto:trans.timmermans@gmail.com?subject=' + subject + '&body=' + body;
+
+  const btn = document.getElementById('f-submit');
+  btn.textContent = currentLang === 'pl' ? 'Wysłano ✓' : 'Sent ✓';
+  btn.classList.add('sent');
 }
 </script>
 
